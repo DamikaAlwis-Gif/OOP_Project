@@ -2,12 +2,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class TaskFactory implements ITaskFactory {
-    private ArrayList<ATask> taskList = new ArrayList<>();
-    public ArrayList<ATask> getTaskList() {
-        return taskList;
-    }
-
-
 
 
     // factory design pattern used to create Task objects
@@ -28,9 +22,9 @@ public class TaskFactory implements ITaskFactory {
                 } else {
                     task = new PersonalTask(list[0], date, Integer.parseInt(list[2]));
                 }
-                taskList.add(task);
-                System.out.println("Personal task added");
-               // FileManager.writeToFile("personalTasks", task_details);
+
+                System.out.println("Personal task created");
+
                 break;
 
             case "official":
@@ -41,9 +35,8 @@ public class TaskFactory implements ITaskFactory {
                     task = new OfficialTask(list[0], date, list[2], list[3], Integer.parseInt(list[4]));
                 }
 
-                taskList.add(task);
-                System.out.println("Official task added");
-               // FileManager.writeToFile("officialTasks", task_details);
+                System.out.println("Official task created");
+
                 break;
             default:
                 System.out.println("Invalid task type!");

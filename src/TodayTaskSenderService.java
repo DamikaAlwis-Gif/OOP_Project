@@ -1,7 +1,7 @@
-public class TOdayTaskSenderService {
+public class TodayTaskSenderService {
     private ITodayTaskSender todayTaskSender;
 
-    public TOdayTaskSenderService(ITodayTaskSender todayTaskSender) {
+    public TodayTaskSenderService(ITodayTaskSender todayTaskSender) {
         this.todayTaskSender = todayTaskSender;
     }
 //void sendTodayTasks(String input, TaskQueryService queryService,  ReminderService reminderService,ReceiverManagerService receiverManagerService)

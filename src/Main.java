@@ -1,83 +1,67 @@
-
+import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
 
-        TaskRepository taskRepository = new TaskRepository();// holds list of tasks in the applicaiton
-        TaskRepositoryService taskRepositoryService = new TaskRepositoryService(taskRepository);// create task Repo service
+        Scanner scanner = new Scanner(System.in);
+        Controller controller = new Controller();
 
-        TaskFactory taskFactory = new TaskFactory();// for creating new tasks
-        TaskFactoryService taskFactoryService = new TaskFactoryService(taskFactory);
+        ConsoleOperations consoleOperations = new ConsoleOperations(scanner);
+        ConsoleServices consoleServices = new ConsoleServices(consoleOperations);// handle console inputs and outputs
 
-        FileOperations fileOperations = new FileOperations();// do file operations (data operations)
-        DataOperationsService dataOperationsService = new DataOperationsService(fileOperations);
+        controller.handleLoadingTasks();
+        controller.handleSendingTodayTaskListUser();
 
-        //loading existing tasks in the system
-        TaskLoader taskLoader = new TaskLoader(taskRepositoryService , dataOperationsService);
-        TaskLoaderService taskLoaderService = new TaskLoaderService(taskLoader);
-
-        EmailOperations emailOperations = new EmailOperations(); // class for email operaions
-        ReminderService reminderService = new ReminderService(emailOperations);
-
-
-        TaskQuery taskQuery = new TaskQuery(taskRepository);
-        //create a task query service to query data from task repo
-        TaskQueryService queryService = new TaskQueryService(taskQuery);
-
-        ReceiverManager receiverManager = new ReceiverManager();// class for managing receivers
-        ReceiverManagerService receiverManagerService = new ReceiverManagerService(receiverManager);
-
-        TodayTaskSender automaticReminderOperations = new TodayTaskSender(queryService,reminderService,receiverManagerService);
-        TOdayTaskSenderService todayTaskSenderService = new TOdayTaskSenderService(automaticReminderOperations);
-
-        ICaseHandler caseHandler = new caseHandler(taskFactoryService,taskRepositoryService,dataOperationsService,queryService, todayTaskSenderService,reminderService,receiverManagerService);
-        caseHandlerService caseHandlerService = new caseHandlerService(caseHandler);
-
-
-        taskLoaderService.loadTasks(); // load the existing tasks to the task Repo
-
-        //create the current user of the application
-        User user = new User("Kasun","damika7alwis@gmail.com","password123");
-        todayTaskSenderService.sendTodayTasks(user);// send today tasks to the user
-
-        System.out.println("Welcome to the Task Manager Application!");// welcome msg
-
+        consoleServices.showWelcomeMessage();
 
         while (true) {
 
             try {
-            String option = caseHandlerService.handleGettingBaseOption();
 
+                String option = consoleServices.getBaseOptionType();
                 switch (option) {
+
                     case "1":
-                        String task_choice = caseHandlerService.handleGettingTaskChoice();
+
+                        String task_choice = consoleServices.getTaskType();
+
                         switch (task_choice) {
                             case "1":
-                                caseHandlerService.handleAddingATask("personal");
+                                String personalTaskDetail = consoleServices.getPersonalTaskDetails(); // get the input
+                                controller.handleAddingAPersonalTask(personalTaskDetail);
                                 break;
+                                
                             case "2":
 
-                                caseHandlerService.handleAddingATask("official");
+                                String officialTaskDetail = consoleServices.getOfficialTaskDetails(); // get the input
+                                controller.handleAddingAOfficialTask(officialTaskDetail);
                                 break;
+
                             default:
-                                caseHandlerService.handleInvalidTaskType();
+                                consoleServices.showInvalidTaskTypeMessage();
                                 break;
                         }
 
                         break;
                     case "2":
-                        caseHandlerService.handleSeeTaskDetailsByDate();
+                        String dateInput = consoleServices.getDateInput(); // getting inputs
+                        controller.handleSeeTaskDetailsByDate(dateInput);
                         break;
 
                     case "3":
-                        caseHandlerService.handleSeeTaskDetailsById();
+
+                        int id = consoleServices.getIDInput();
+                        controller.handleSeeTaskDetailsById(id);
+
                         break;
                     case "4":
-                        caseHandlerService.handleSendingTaskDetails();
+                        String receiverDetailInput = consoleServices.getReceiverDetails();
+                        controller.handleSendingTaskDetails(receiverDetailInput);
                         break;
 
                     default:
-                       caseHandlerService.handleInvalidInput();
+                       consoleServices.showInvalidInputMessage();
                 }
 
             } catch (Exception e) {

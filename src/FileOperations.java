@@ -11,7 +11,7 @@ public class FileOperations implements IDataOperations {
     private String officialTaskLocation;
 
     public FileOperations() {
-        personalTaskLocation = "persoanlTasks";
+        personalTaskLocation = "personalTasks";
         officialTaskLocation = "officialTasks";
     }
 

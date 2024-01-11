@@ -2,8 +2,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class TaskQuery implements ITaskQuery {
-   private ITaskRepository taskRepository;
-
+   private ITaskRepository taskRepository;// dependency inversion
+    // dependency injection by constructor
     public TaskQuery(ITaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
